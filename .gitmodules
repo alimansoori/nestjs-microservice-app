@@ -1,0 +1,12 @@
+[submodule "api-gateway"]
+	path = api-gateway
+	url = git@github.com:alimansoori/api-gateway.git
+    branch = main
+[submodule "services/payments-service"]
+	path = services/payments-service
+	url = git@github.com:alimansoori/payments-service.git
+	branch = main
+[submodule "services/users-service"]
+	path = services/users-service
+	url = git@github.com:alimansoori/users-service.git
+	branch = main

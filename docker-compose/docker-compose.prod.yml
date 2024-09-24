@@ -1,0 +1,41 @@
+services:
+  api-gateway:
+    image: node:lts-alpine3.19
+    container_name: api-gateway
+    ports:
+      - "3000:3000"
+    volumes:
+      - ../api-gateway/dist:/usr/src/app/dist
+      - ../api-gateway/package.json:/usr/src/app/package.json
+      - ../api-gateway/package-lock.json:/usr/src/app/package-lock.json
+      - ../api-gateway/node_modules:/usr/src/app/node_modules
+    command: sh -c "npm install --force && npm run start:prod"
+    working_dir: /usr/src/app
+    environment:
+      - PORT:3000
+  users-service:
+    image: node:lts-alpine3.19
+    container_name: users-service
+    volumes:
+      - ../users-service/dist:/usr/src/app/dist
+      - ../users-service/package.json:/usr/src/app/package.json
+      - ../users-service/package-lock.json:/usr/src/app/package-lock.json
+      - ../users-service/node_modules:/usr/src/app/node_modules
+    command: sh -c "npm install --force && npm run start:prod"
+    working_dir: /usr/src/app
+  payments-service:
+    image: node:lts-alpine3.19
+    container_name: payments-service
+    volumes:
+      - ../payments-service/dist:/usr/src/app/dist
+      - ../payments-service/package.json:/usr/src/app/package.json
+      - ../payments-service/package-lock.json:/usr/src/app/package-lock.json
+      - ../payments-service/node_modules:/usr/src/app/node_modules
+    command: sh -c "npm install --force && npm run start:prod"
+    working_dir: /usr/src/app
+  nats:
+    image: nats:latest
+    container_name: nats
+    ports:
+      - "4222:4222"
+    
