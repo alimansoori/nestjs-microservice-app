@@ -7,26 +7,34 @@ services:
     restart: always
     ports:
       - "3000:3000"
+      - "4000:8080"
     volumes:
       - ../api-gateway/src:/usr/src/app/src
-    command: npm run start:dev
+      - ../api-gateway/documentation:/usr/src/app/documentation 
+    command: sh -c "npx @compodoc/compodoc -p tsconfig.json -s && npm run start:dev"
     environment:
+      - NODE_ENV:development
       - PORT:3000
     networks:
       - backend
       - frontend
 
   users-service:
-    build: ../users-service
+    build: ../services/users-service
     container_name: users-service
     restart: always
+    ports:
+      - "4001:8080"
     volumes:
-      - ../users-service/src:/usr/src/app/src
-    command: npm run start:dev
+      - ../services/users-service/src:/usr/src/app/src
+      - ../services/users-service/documentation:/usr/src/app/documentation
+    command: sh -c "npx @compodoc/compodoc -p tsconfig.json -s && npm run start:dev"
     networks:
       - backend
     links:
       - mysql_users_db
+    environment:
+      - NODE_ENV:development
 
   mysql_users_db:
     image: mysql:8.0
@@ -46,16 +54,21 @@ services:
       - backend
 
   payments-service:
-    build: ../payments-service
+    build: ../services/payments-service
     container_name: payments-service
     restart: always
+    ports:
+      - "4002:8080"
     volumes:
-      - ../payments-service/src:/usr/src/app/src
-    command: npm run start:dev
+      - ../services/payments-service/src:/usr/src/app/src
+      - ../services/payments-service/documentation:/usr/src/app/documentation
+    command: sh -c "npx @compodoc/compodoc -p tsconfig.json -s && npm run start:dev"
     networks:
       - backend
     links:
       - mysql_payments_db
+    environment:
+      - NODE_ENV:development
 
   mysql_payments_db:
     image: mysql:8.0
