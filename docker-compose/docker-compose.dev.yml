@@ -12,26 +12,21 @@ services:
     volumes:
       - ../api-gateway/src:/usr/src/app/src
     command: npm run start:dev
-    environment:
-      - NODE_ENV:development
-      - PORT:3000
+    env_file:
+      - ../.env
     networks:
       - backend
       - frontend
 
   api-gateway-documentation:
-    image: node:lts-alpine3.19
+    build:
+      context: ../api-gateway
+      target: development
     container_name: api-gateway-documentation
     restart: always
     ports:
       - "4000:8080"
-    volumes:
-      - ../api-gateway/src:/usr/src/app/src
-      - ../api-gateway/package.json:/usr/src/app/package.json
-      - ../api-gateway/package-lock.json:/usr/src/app/package-lock.json
-      - ../api-gateway/tsconfig.json:/usr/src/app/tsconfig.json
-    command: sh -c "npm install --force && npx @compodoc/compodoc -p tsconfig.json -s"
-    working_dir: /usr/src/app
+    command: npx @compodoc/compodoc -p tsconfig.json -s
     environment:
       - NODE_ENV:development
     networks:
@@ -71,18 +66,14 @@ services:
       - backend
 
   users-service-documentation:
-    image: node:lts-alpine3.19
+    build:
+      context: ../services/users-service
+      target: development
     container_name: users-service-documentation
     restart: always
     ports:
       - "4001:8080"
-    volumes:
-      - ../services/users-service/src:/usr/src/app/src
-      - ../services/users-service/package.json:/usr/src/app/package.json
-      - ../services/users-service/package-lock.json:/usr/src/app/package-lock.json
-      - ../services/users-service/tsconfig.json:/usr/src/app/tsconfig.json
-    command: sh -c "npm install --force && npx @compodoc/compodoc -p tsconfig.json -s"
-    working_dir: /usr/src/app
+    command: npx @compodoc/compodoc -p tsconfig.json -s
     environment:
       - NODE_ENV:development
     networks:
@@ -122,18 +113,14 @@ services:
       - backend
 
   payments-service-documentation:
-    image: node:lts-alpine3.19
+    build:
+      context: ../services/payments-service
+      target: development
     container_name: payments-service-documentation
     restart: always
     ports:
       - "4002:8080"
-    volumes:
-      - ../services/payments-service/src:/usr/src/app/src
-      - ../services/payments-service/package.json:/usr/src/app/package.json
-      - ../services/payments-service/package-lock.json:/usr/src/app/package-lock.json
-      - ../services/payments-service/tsconfig.json:/usr/src/app/tsconfig.json
-    command: sh -c "npm install --force && npx @compodoc/compodoc -p tsconfig.json -s"
-    working_dir: /usr/src/app
+    command: npx @compodoc/compodoc -p tsconfig.json -s
     environment:
       - NODE_ENV:development
     networks:
