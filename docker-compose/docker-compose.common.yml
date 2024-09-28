@@ -1,0 +1,125 @@
+version: '3.3'
+
+services:
+  api-gateway:
+    container_name: api-gateway
+    restart: always
+    ports:
+      - "3000:3000"
+    env_file:
+      - ../.env
+    networks:
+      - backend
+      - frontend
+
+  api-gateway-documentation:
+    container_name: api-gateway-documentation
+    restart: always
+    ports:
+      - "4000:8080"
+    command: npx @compodoc/compodoc -p tsconfig.json -s
+    env_file:
+      - ../.env
+    networks:
+      - backend
+
+  users-service:
+    container_name: users-service
+    restart: always
+    networks:
+      - backend
+    links:
+      - mysql_users_db
+    env_file:
+      - ../.env
+
+  mysql_users_db:
+    image: mysql:8.0
+    container_name: mysql_users_db
+    restart: on-failure
+    ports:
+      - "3308:3307"
+    environment:
+      - MYSQL_ROOT_PASSWORD=secret
+      - MYSQL_DATABASE=users_db
+      - MYSQL_USER=testuser
+      - MYSQL_PASSWORD=secret
+      - MYSQL_TCP_PORT=3307
+    volumes:
+      - mysql_users_db:/var/lib/mysql
+    networks:
+      - backend
+
+  users-service-documentation:
+    container_name: users-service-documentation
+    restart: always
+    ports:
+      - "4001:8080"
+    command: npx @compodoc/compodoc -p tsconfig.json -s
+    env_file:
+      - ../.env
+    networks:
+      - backend
+
+  payments-service:
+    container_name: payments-service
+    restart: always
+    volumes:
+      - ../services/payments-service/src:/usr/src/app/src
+    command: npm run start:dev
+    networks:
+      - backend
+    links:
+      - mysql_payments_db
+    env_file:
+      - ../.env
+
+  mysql_payments_db:
+    image: mysql:8.0
+    container_name: mysql_payments_db
+    restart: on-failure
+    ports:
+      - "3309:3307"
+    environment:
+      - MYSQL_ROOT_PASSWORD=secret
+      - MYSQL_DATABASE=payments_db
+      - MYSQL_USER=testuser
+      - MYSQL_PASSWORD=secret
+      - MYSQL_TCP_PORT=3307
+    volumes:
+      - mysql_payments_db:/var/lib/mysql
+    networks:
+      - backend
+
+  payments-service-documentation:
+    container_name: payments-service-documentation
+    restart: always
+    ports:
+      - "4002:8080"
+    command: npx @compodoc/compodoc -p tsconfig.json -s
+    env_file:
+      - ../.env
+    networks:
+      - backend
+
+  nats:
+    image: nats:latest
+    container_name: nats
+    ports:
+      - "4222:4222"
+    networks:
+      - backend
+
+#Volumes
+volumes:
+  mysql_users_db:
+    driver: local
+  mysql_payments_db:
+    driver: local
+
+networks:
+  backend:
+    driver: bridge
+  frontend:
+    external:
+      name: infrastructure

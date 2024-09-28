@@ -5,151 +5,32 @@ services:
     build:
       context: ../api-gateway
       target: production
-    container_name: api-gateway
     restart: always
-    ports:
-      - "3000:3000"
     command: npm run start:prod
-    environment:
-      - NODE_ENV:production
-      - PORT:3000
-    networks:
-      - backend
-      - frontend
 
   api-gateway-documentation:
-    image: node:lts-alpine3.19
-    container_name: api-gateway-documentation
-    restart: always
-    ports:
-      - "4000:8080"
-    volumes:
-      - ../api-gateway/src:/usr/src/app/src
-      - ../api-gateway/package.json:/usr/src/app/package.json
-      - ../api-gateway/package-lock.json:/usr/src/app/package-lock.json
-      - ../api-gateway/tsconfig.json:/usr/src/app/tsconfig.json
-    command: sh -c "npm install --force && npx @compodoc/compodoc -p tsconfig.json -s"
-    working_dir: /usr/src/app
-    environment:
-      - NODE_ENV:production
-    networks:
-      - backend
+    build:
+      context: ../api-gateway
+      target: production
 
   users-service:
-    build: 
+    build:
       context: ../services/users-service
       target: production
-    container_name: users-service
-    restart: always
     command: npm run start:prod
-    networks:
-      - backend
-    links:
-      - mysql_users_db
-    environment:
-      - NODE_ENV:production
-
-  mysql_users_db:
-    image: mysql:8.0
-    container_name: mysql_users_db
-    restart: on-failure
-    ports:
-      - "3308:3307"
-    environment:
-      - MYSQL_ROOT_PASSWORD=secret
-      - MYSQL_DATABASE=users_db
-      - MYSQL_USER=testuser
-      - MYSQL_PASSWORD=secret
-      - MYSQL_TCP_PORT=3307
-    volumes:
-      - mysql_users_db:/var/lib/mysql
-    networks:
-      - backend
 
   users-service-documentation:
-    image: node:lts-alpine3.19
-    container_name: users-service-documentation
-    restart: always
-    ports:
-      - "4001:8080"
-    volumes:
-      - ../services/users-service/src:/usr/src/app/src
-      - ../services/users-service/package.json:/usr/src/app/package.json
-      - ../services/users-service/package-lock.json:/usr/src/app/package-lock.json
-      - ../services/users-service/tsconfig.json:/usr/src/app/tsconfig.json
-    command: sh -c "npm install --force && npx @compodoc/compodoc -p tsconfig.json -s"
-    working_dir: /usr/src/app
-    environment:
-      - NODE_ENV:production
-    networks:
-      - backend
+    build:
+      context: ../services/users-service
+      target: production
 
   payments-service:
     build:
       context: ../services/payments-service
       target: production
-    container_name: payments-service
     command: npm run start:prod
-    networks:
-      - backend
-    links:
-      - mysql_payments_db
-    environment:
-      - NODE_ENV:production
-
-  mysql_payments_db:
-    image: mysql:8.0
-    container_name: mysql_payments_db
-    restart: on-failure
-    ports:
-      - "3309:3307"
-    environment:
-      - MYSQL_ROOT_PASSWORD=secret
-      - MYSQL_DATABASE=payments_db
-      - MYSQL_USER=testuser
-      - MYSQL_PASSWORD=secret
-      - MYSQL_TCP_PORT=3307
-    volumes:
-      - mysql_payments_db:/var/lib/mysql
-    networks:
-      - backend
 
   payments-service-documentation:
-    image: node:lts-alpine3.19
-    container_name: payments-service-documentation
-    restart: always
-    ports:
-      - "4002:8080"
-    volumes:
-      - ../services/payments-service/src:/usr/src/app/src
-      - ../services/payments-service/package.json:/usr/src/app/package.json
-      - ../services/payments-service/package-lock.json:/usr/src/app/package-lock.json
-      - ../services/payments-service/tsconfig.json:/usr/src/app/tsconfig.json
-    command: sh -c "npm install --force && npx @compodoc/compodoc -p tsconfig.json -s"
-    working_dir: /usr/src/app
-    environment:
-      - NODE_ENV:development
-    networks:
-      - backend
-
-  nats:
-    image: nats:latest
-    container_name: nats
-    ports:
-      - "4222:4222"
-    networks:
-      - backend
-
-#Volumes
-volumes:
-  mysql_users_db:
-    driver: local
-  mysql_payments_db:
-    driver: local
-
-networks:
-  backend:
-    driver: bridge
-  frontend:
-    external:
-      name: infrastructure
+    build:
+      context: ../services/payments-service
+      target: production

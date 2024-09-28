@@ -1,0 +1,26 @@
+version: '3.3'
+
+services:
+  nginx-ssl:
+    image: linuxserver/letsencrypt
+    container_name: nginx-ssl
+    ports:
+        - 80:80
+        - 443:443
+    volumes:
+        - ~/work/nginx-ssl:/config
+        - ~/work/ui:/ui
+        - ~/work/files:/files
+    environment:
+        - URL=alimansoori.com
+        # - SUBDOMAINS=v1,v2,california
+        - VALIDATION=http
+        - TZ=America/Vancouver
+        # - EXTRA_DOMAINS=TheActualized.com
+    external_links:
+        - api-gateway
+        - nats
+    logging:
+        driver: "json-file"
+        options:
+            max-size: "10m"
