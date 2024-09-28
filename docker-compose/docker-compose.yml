@@ -1,56 +1,68 @@
 services:
+  nginx-ssl:
+    image: linuxserver/letsencrypt
+    container_name: nginx-ssl
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - ~/work/nginx-ssl:/config
+      - ~/work/ui:/ui
+      - ~/work/files:/files
+    environment:
+      - URL=alimansoori.com
+      - VALIDATION=http
+      - TZ=America/Vancouver
+    external_links:
+      - api-gateway
+      - nats
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+
   api-gateway:
-    image: node:lts-alpine3.19
+    build:
+      context: ../api-gateway
+      target: production
+    command: npm run start:prod
     container_name: api-gateway
     restart: always
     ports:
       - "3000:3000"
-    volumes:
-      - ../api-gateway/dist:/usr/src/app/dist
-      - ../api-gateway/package.json:/usr/src/app/package.json
-      - ../api-gateway/package-lock.json:/usr/src/app/package-lock.json
-    command: sh -c "npm install --force && npm run start:prod"
-    working_dir: /usr/src/app
-    environment:
-      - NODE_ENV:production
-      - PORT:3000
+    env_file:
+      - ../.env
     networks:
       - backend
       - frontend
 
   api-gateway-documentation:
-    image: node:lts-alpine3.19
+    build:
+      context: ../api-gateway
+      target: production
     container_name: api-gateway-documentation
     restart: always
     ports:
       - "4000:8080"
-    volumes:
-      - ../api-gateway/documentation:/usr/src/app/documentation
-      - ../api-gateway/package.json:/usr/src/app/package.json
-      - ../api-gateway/package-lock.json:/usr/src/app/package-lock.json
-    command: sh -c "npm install --force && npx compodoc -s"
-    working_dir: /usr/src/app
-    environment:
-      - NODE_ENV:production
+    command: npx @compodoc/compodoc -p tsconfig.json -s
+    env_file:
+      - ../.env
     networks:
       - backend
 
   users-service:
-    image: node:lts-alpine3.19
+    build:
+      context: ../services/users-service
+      target: production
+    command: npm run start:prod
     container_name: users-service
     restart: always
-    volumes:
-      - ../services/users-service/dist:/usr/src/app/dist
-      - ../services/users-service/package.json:/usr/src/app/package.json
-      - ../services/users-service/package-lock.json:/usr/src/app/package-lock.json
-    command: sh -c "npm install --force && npm run start:prod"
-    working_dir: /usr/src/app
     networks:
       - backend
     links:
       - mysql_users_db
-    environment:
-      - NODE_ENV:production
+    env_file:
+      - ../.env
 
   mysql_users_db:
     image: mysql:8.0
@@ -70,39 +82,34 @@ services:
       - backend
 
   users-service-documentation:
-    image: node:lts-alpine3.19
+    build:
+      context: ../services/users-service
+      target: production
     container_name: users-service-documentation
     restart: always
     ports:
       - "4001:8080"
-    volumes:
-      - ../services/users-service/src:/usr/src/app/src
-      - ../services/users-service/package.json:/usr/src/app/package.json
-      - ../services/users-service/package-lock.json:/usr/src/app/package-lock.json
-      - ../services/users-service/tsconfig.json:/usr/src/app/tsconfig.json
-    command: sh -c "npm install --force && npx @compodoc/compodoc -p tsconfig.json -s"
-    working_dir: /usr/src/app
-    environment:
-      - NODE_ENV:production
+    command: npx @compodoc/compodoc -p tsconfig.json -s
+    env_file:
+      - ../.env
     networks:
       - backend
 
   payments-service:
-    image: node:lts-alpine3.19
+    build:
+      context: ../services/payments-service
+      target: production
+    command: npm run start:prod
     container_name: payments-service
     restart: always
     volumes:
-      - ../services/payments-service/dist:/usr/src/app/dist
-      - ../services/payments-service/package.json:/usr/src/app/package.json
-      - ../services/payments-service/package-lock.json:/usr/src/app/package-lock.json
-    command: sh -c "npm install --force && npm run start:prod"
-    working_dir: /usr/src/app
+      - ../services/payments-service/src:/usr/src/app/src
     networks:
       - backend
     links:
       - mysql_payments_db
-    environment:
-      - NODE_ENV:production
+    env_file:
+      - ../.env
 
   mysql_payments_db:
     image: mysql:8.0
@@ -122,20 +129,16 @@ services:
       - backend
 
   payments-service-documentation:
-    image: node:lts-alpine3.19
+    build:
+      context: ../services/payments-service
+      target: production
     container_name: payments-service-documentation
     restart: always
     ports:
       - "4002:8080"
-    volumes:
-      - ../services/payments-service/src:/usr/src/app/src
-      - ../services/payments-service/package.json:/usr/src/app/package.json
-      - ../services/payments-service/package-lock.json:/usr/src/app/package-lock.json
-      - ../services/payments-service/tsconfig.json:/usr/src/app/tsconfig.json
-    command: sh -c "npm install --force && npx @compodoc/compodoc -p tsconfig.json -s"
-    working_dir: /usr/src/app
-    environment:
-      - NODE_ENV:production
+    command: npx @compodoc/compodoc -p tsconfig.json -s
+    env_file:
+      - ../.env
     networks:
       - backend
 
@@ -146,7 +149,7 @@ services:
       - "4222:4222"
     networks:
       - backend
-    
+
 #Volumes
 volumes:
   mysql_users_db:
