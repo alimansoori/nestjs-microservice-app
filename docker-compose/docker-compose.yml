@@ -1,28 +1,6 @@
 version: '3.4'
 
 services:
-  nginx-ssl:
-    image: nginx:latest
-    container_name: nginx-ssl
-    ports:
-      - 80:80
-      - 443:443
-    volumes:
-      - ~/work/nginx-ssl:/etc/nginx/conf.d
-      - ~/work/letsencrypt:/etc/letsencrypt
-      - ~/work/ui:/ui
-      - ~/work/files:/files
-    environment:
-      - TZ=America/Vancouver
-    links:
-      - api-gateway
-      - nats
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "10m"
-    restart: always
-
   api-gateway:
     build:
       context: ../api-gateway
@@ -35,8 +13,7 @@ services:
     env_file:
       - ../.env
     networks:
-      - backend
-      - frontend
+      - microservice-network
 
   api-gateway-documentation:
     build:
@@ -50,7 +27,7 @@ services:
     env_file:
       - ../.env
     networks:
-      - backend
+      - microservice-network
 
   users-service:
     build:
@@ -60,7 +37,7 @@ services:
     container_name: users-service
     restart: always
     networks:
-      - backend
+      - microservice-network
     links:
       - mysql_users_db
     env_file:
@@ -81,7 +58,7 @@ services:
     volumes:
       - mysql_users_db:/var/lib/mysql
     networks:
-      - backend
+      - microservice-network
 
   users-service-documentation:
     build:
@@ -95,7 +72,7 @@ services:
     env_file:
       - ../.env
     networks:
-      - backend
+      - microservice-network
 
   payments-service:
     build:
@@ -107,7 +84,7 @@ services:
     volumes:
       - ../services/payments-service/src:/usr/src/app/src
     networks:
-      - backend
+      - microservice-network
     links:
       - mysql_payments_db
     env_file:
@@ -128,7 +105,7 @@ services:
     volumes:
       - mysql_payments_db:/var/lib/mysql
     networks:
-      - backend
+      - microservice-network
 
   payments-service-documentation:
     build:
@@ -142,7 +119,7 @@ services:
     env_file:
       - ../.env
     networks:
-      - backend
+      - microservice-network
 
   nats:
     image: nats:latest
@@ -150,7 +127,7 @@ services:
     ports:
       - "4222:4222"
     networks:
-      - backend
+      - microservice-network
 
 #Volumes
 volumes:
@@ -160,8 +137,5 @@ volumes:
     driver: local
 
 networks:
-  backend:
-    driver: bridge
-  frontend:
-    external:
-      name: infrastructure
+  microservice-network:
+    external: true

@@ -1,0 +1,17 @@
+version: '3.4'
+
+networks:
+  microservice-network:
+    external: true
+services:
+  nginx:
+    image: reverse-proxy
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: nginx
+    restart: always
+    ports:
+      - 80:80
+    networks:
+      - microservice-network
