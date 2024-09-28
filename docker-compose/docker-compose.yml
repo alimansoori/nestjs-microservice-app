@@ -1,3 +1,5 @@
+version: '3.8'
+
 services:
   nginx-ssl:
     image: linuxserver/letsencrypt
@@ -34,6 +36,7 @@ services:
       - ../.env
     networks:
       - backend
+      - frontend
 
   api-gateway-documentation:
     build:
@@ -159,3 +162,6 @@ volumes:
 networks:
   backend:
     driver: bridge
+  frontend:
+    external:
+      name: infrastructure
