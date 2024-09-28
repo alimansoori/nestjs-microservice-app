@@ -34,7 +34,6 @@ services:
       - ../.env
     networks:
       - backend
-      - frontend
 
   api-gateway-documentation:
     build:
@@ -160,6 +159,3 @@ volumes:
 networks:
   backend:
     driver: bridge
-  frontend:
-    external:
-      name: infrastructure
