@@ -2,26 +2,26 @@ version: '3.4'
 
 services:
   nginx-ssl:
-    image: linuxserver/letsencrypt
+    image: nginx:latest
     container_name: nginx-ssl
     ports:
       - 80:80
       - 443:443
     volumes:
-      - ~/work/nginx-ssl:/config
+      - ~/work/nginx-ssl:/etc/nginx/conf.d
+      - ~/work/letsencrypt:/etc/letsencrypt
       - ~/work/ui:/ui
       - ~/work/files:/files
     environment:
-      - URL=alimansoori.com
-      - VALIDATION=http
       - TZ=America/Vancouver
-    external_links:
+    links:
       - api-gateway
       - nats
     logging:
       driver: "json-file"
       options:
         max-size: "10m"
+    restart: always
 
   api-gateway:
     build:
