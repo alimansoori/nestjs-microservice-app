@@ -1,5 +1,3 @@
-version: '3.3'
-
 services:
   api-gateway:
     image: node:lts-alpine3.19
