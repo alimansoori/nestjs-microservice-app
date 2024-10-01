@@ -15,19 +15,19 @@ services:
     networks:
       - microservice-network
 
-  api-gateway-documentation:
-    build:
-      context: ../api-gateway
-      target: production
-    container_name: api-gateway-documentation
-    restart: always
-    ports:
-      - "4000:8080"
-    command: npx @compodoc/compodoc -p tsconfig.json -s
-    env_file:
-      - ../.env
-    networks:
-      - microservice-network
+  # api-gateway-documentation:
+  #   build:
+  #     context: ../api-gateway
+  #     target: production
+  #   container_name: api-gateway-documentation
+  #   restart: always
+  #   ports:
+  #     - "4000:8080"
+  #   command: npx @compodoc/compodoc -p tsconfig.json -s
+  #   env_file:
+  #     - ../.env
+  #   networks:
+  #     - microservice-network
 
   users-service:
     build:
@@ -60,19 +60,19 @@ services:
     networks:
       - microservice-network
 
-  users-service-documentation:
-    build:
-      context: ../services/users-service
-      target: production
-    container_name: users-service-documentation
-    restart: always
-    ports:
-      - "4001:8080"
-    command: npx @compodoc/compodoc -p tsconfig.json -s
-    env_file:
-      - ../.env
-    networks:
-      - microservice-network
+  # users-service-documentation:
+  #   build:
+  #     context: ../services/users-service
+  #     target: production
+  #   container_name: users-service-documentation
+  #   restart: always
+  #   ports:
+  #     - "4001:8080"
+  #   command: npx @compodoc/compodoc -p tsconfig.json -s
+  #   env_file:
+  #     - ../.env
+  #   networks:
+  #     - microservice-network
 
   payments-service:
     build:
@@ -107,19 +107,19 @@ services:
     networks:
       - microservice-network
 
-  payments-service-documentation:
-    build:
-      context: ../services/payments-service
-      target: production
-    container_name: payments-service-documentation
-    restart: always
-    ports:
-      - "4002:8080"
-    command: npx @compodoc/compodoc -p tsconfig.json -s
-    env_file:
-      - ../.env
-    networks:
-      - microservice-network
+  # payments-service-documentation:
+  #   build:
+  #     context: ../services/payments-service
+  #     target: production
+  #   container_name: payments-service-documentation
+  #   restart: always
+  #   ports:
+  #     - "4002:8080"
+  #   command: npx @compodoc/compodoc -p tsconfig.json -s
+  #   env_file:
+  #     - ../.env
+  #   networks:
+  #     - microservice-network
 
   nats:
     image: nats:latest
@@ -129,7 +129,6 @@ services:
     networks:
       - microservice-network
 
-#Volumes
 volumes:
   mysql_users_db:
     driver: local
