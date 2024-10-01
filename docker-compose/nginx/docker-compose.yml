@@ -28,11 +28,15 @@ services:
       - ./letsencrypt:/var/log/letsencrypt
     networks:
       - microservice-network
-    command: certonly --webroot --webroot-path=/var/www/certbot \
-      --email alimanssouri221@gmail.com \
-      --agree-tos \
-      --no-eff-email \
-      -d alimansoori.com
+    command: [
+      "certonly",
+      "--webroot",
+      "--webroot-path=/var/www/certbot",
+      "--email", "alimanssouri221@gmail.com",
+      "--agree-tos",
+      "--no-eff-email",
+      "-d", "alimansoori.com"
+    ]
 
 volumes:
   certs:
