@@ -17,12 +17,14 @@ services:
       - microservice-network
     volumes:
       - certs:/etc/letsencrypt
+      - certbot-www:/var/www/certbot
 
   certbot:
     image: certbot/certbot
     container_name: certbot
     volumes:
       - certs:/etc/letsencrypt
+      - certbot-www:/var/www/certbot
       - ./letsencrypt:/var/log/letsencrypt
     networks:
       - microservice-network
@@ -34,3 +36,4 @@ services:
 
 volumes:
   certs:
+  certbot-www:
