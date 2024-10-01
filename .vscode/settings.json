@@ -4,6 +4,7 @@
         "certbot",
         "compodoc",
         "contex",
+        "fullchain",
         "letsencrypt",
         "nats"
     ]

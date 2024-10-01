@@ -16,11 +16,11 @@ services:
       - 443:443
     networks:
       - microservice-network
-    # volumes:
-    #   - ./certbot/www/:/var/www/certbot/:ro
+    volumes:
+      - ./certbot/www/:/var/www/certbot/:ro
 
-  # certbot:
-  #   image: certbot/certbot:latest
-  #   volumes:
-  #     - ./certbot/www/:/var/www/certbot/:rw
-  #     - ./certbot/conf/:/etc/letsencrypt/:rw
+  certbot:
+    image: certbot/certbot:latest
+    volumes:
+      - ./certbot/www/:/var/www/certbot/:rw
+      - ./certbot/conf/:/etc/letsencrypt/:rw
