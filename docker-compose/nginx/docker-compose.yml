@@ -5,7 +5,6 @@ networks:
     external: true
 services:
   nginx:
-    image: reverse-proxy
     build:
       context: .
       dockerfile: Dockerfile
