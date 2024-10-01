@@ -15,8 +15,8 @@ services:
     volumes:
       - letsencrypt-data:/etc/letsencrypt/
     environment:
-      BACKEND: "api-gateway:3000"
-      HSTS: true
+      - BACKEND=api-gateway:3000
+      - HSTS=true
 
 volumes:
   letsencrypt-data:
