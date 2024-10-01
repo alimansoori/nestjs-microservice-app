@@ -5,19 +5,13 @@ networks:
     external: true
 services:
   nginx:
-    image: michaelbaudino/nginx-letsencrypt-reverse-proxy
+    image: reverse-proxy
+    build:
+      context: .
+      dockerfile: Dockerfile
     container_name: nginx
+    restart: always
     ports:
       - 80:80
-      - 443:443
     networks:
       - microservice-network
-    volumes:
-      - letsencrypt-data:/etc/letsencrypt/
-    environment:
-      - BACKEND=api-gateway:3000
-      - HSTS=true
-
-volumes:
-  letsencrypt-data:
-    driver: local
