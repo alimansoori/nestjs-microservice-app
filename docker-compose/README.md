@@ -7,5 +7,3 @@ docker-compose -p microservice-app -f docker-compose/docker-compose.common.yml -
 docker-compose -p microservice-app -f docker-compose/docker-compose.common.yml -f docker-compose/docker-compose.prod.yml down
 
 git submodule update --init --recursivecro
-
-docker-compose run --rm certbot certonly --webroot --webroot-path=/var/www/certbot -d example.com

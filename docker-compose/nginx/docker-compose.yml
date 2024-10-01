@@ -16,12 +16,11 @@ services:
       - 443:443
     networks:
       - microservice-network
-    volumes:
-      - ./letsencrypt:/etc/letsencrypt
+    # volumes:
+    #   - ./certbot/www/:/var/www/certbot/:ro
 
-  certbot:
-    image: certbot/certbot
-    volumes:
-      - ./letsencrypt:/etc/letsencrypt
-      - ./letsencrypt-www:/var/www/certbot
-    entrypoint: /bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done'
+  # certbot:
+  #   image: certbot/certbot:latest
+  #   volumes:
+  #     - ./certbot/www/:/var/www/certbot/:rw
+  #     - ./certbot/conf/:/etc/letsencrypt/:rw
