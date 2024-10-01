@@ -10,9 +10,6 @@ services:
       dockerfile: Dockerfile
     container_name: nginx
     restart: always
-    environment:
-      - API_GATEWAY_HOST=api-gateway
-      - API_GATEWAY_PORT=3000
     ports:
       - 80:80
     networks:
