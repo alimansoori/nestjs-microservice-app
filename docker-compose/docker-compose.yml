@@ -2,46 +2,47 @@ version: '3.4'
 
 services:
   api-gateway:
-    build:
-      context: ../api-gateway
-      target: production
-    command: npm run start:prod
+    image: node:lts-alpine3.19
+    command: sh -c "npm ci --only=production --legacy-peer-deps && npm run start:prod"
     container_name: api-gateway
     restart: always
     ports:
       - "3000:3000"
+    working_dir: /app
+    volumes:
+      - ~/work/api-gateway:/app
     env_file:
-      - ../.env
+      - ~/work/api-gateway/.env
     networks:
       - microservice-network
 
-  # api-gateway-documentation:
-  #   build:
-  #     context: ../api-gateway
-  #     target: production
-  #   container_name: api-gateway-documentation
-  #   restart: always
-  #   ports:
-  #     - "4000:8080"
-  #   command: npx @compodoc/compodoc -p tsconfig.json -s
-  #   env_file:
-  #     - ../.env
-  #   networks:
-  #     - microservice-network
+  api-gateway-documentation:
+    image: node:lts-alpine3.19
+    container_name: api-gateway-documentation
+    restart: always
+    ports:
+      - "4000:8080"
+    command: sh -c "npm install -g @compodoc/compodoc && compodoc -s"
+    working_dir: /doc
+    volumes:
+      - ~/work/api-gateway-doc:/doc/documentation
+    networks:
+      - microservice-network
 
   users-service:
-    build:
-      context: ../services/users-service
-      target: production
-    command: npm run start:prod
+    image: node:lts-alpine3.19
+    command: sh -c "npm ci --only=production --legacy-peer-deps && npm run start:prod"
     container_name: users-service
     restart: always
+    working_dir: /app
+    volumes:
+      - ~/work/users-service:/app
     networks:
       - microservice-network
     links:
       - mysql_users_db
     env_file:
-      - ../.env
+      - ~/work/users-service/.env
 
   mysql_users_db:
     image: mysql:8.0
@@ -60,35 +61,33 @@ services:
     networks:
       - microservice-network
 
-  # users-service-documentation:
-  #   build:
-  #     context: ../services/users-service
-  #     target: production
-  #   container_name: users-service-documentation
-  #   restart: always
-  #   ports:
-  #     - "4001:8080"
-  #   command: npx @compodoc/compodoc -p tsconfig.json -s
-  #   env_file:
-  #     - ../.env
-  #   networks:
-  #     - microservice-network
+  users-service-documentation:
+    image: node:lts-alpine3.19
+    container_name: users-service-documentation
+    restart: always
+    ports:
+      - "4001:8080"
+    command: sh -c "npm install -g @compodoc/compodoc && compodoc -s"
+    working_dir: /doc
+    volumes:
+      - ~/work/users-service-doc:/doc/documentation
+    networks:
+      - microservice-network
 
   payments-service:
-    build:
-      context: ../services/payments-service
-      target: production
-    command: npm run start:prod
+    image: node:lts-alpine3.19
+    command: sh -c "npm ci --only=production --legacy-peer-deps && npm run start:prod"
     container_name: payments-service
     restart: always
+    working_dir: /app
     volumes:
-      - ../services/payments-service/src:/usr/src/app/src
+      - ~/work/payments-service:/app
     networks:
       - microservice-network
     links:
       - mysql_payments_db
     env_file:
-      - ../.env
+      - ~/work/users-service/.env
 
   mysql_payments_db:
     image: mysql:8.0
@@ -107,19 +106,18 @@ services:
     networks:
       - microservice-network
 
-  # payments-service-documentation:
-  #   build:
-  #     context: ../services/payments-service
-  #     target: production
-  #   container_name: payments-service-documentation
-  #   restart: always
-  #   ports:
-  #     - "4002:8080"
-  #   command: npx @compodoc/compodoc -p tsconfig.json -s
-  #   env_file:
-  #     - ../.env
-  #   networks:
-  #     - microservice-network
+  payments-service-documentation:
+    image: node:lts-alpine3.19
+    container_name: payments-service-documentation
+    restart: always
+    ports:
+      - "4002:8080"
+    command: sh -c "npm install -g @compodoc/compodoc && compodoc -s"
+    working_dir: /doc
+    volumes:
+      - ~/work/payments-service-doc:/doc/documentation
+    networks:
+      - microservice-network
 
   nats:
     image: nats:latest
