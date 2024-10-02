@@ -13,3 +13,4 @@
 [submodule "services/front-service"]
 	path = services/front-service
 	url = git@github.com:alimansoori/front-service.git
+	branch = main
