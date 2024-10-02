@@ -10,3 +10,7 @@
 	path = services/users-service
 	url = git@github.com:alimansoori/users-service.git
 	branch = main
+[submodule "services/next-ui-service"]
+	path = services/next-ui-service
+	url = git@github.com:alimansoori/next-ui-service.git
+	branch = main
