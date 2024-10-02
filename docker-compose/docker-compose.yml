@@ -3,7 +3,7 @@ version: '3.4'
 services:
   front-service:
     image: node:lts-alpine3.19
-    command: sh -c "npm ci --only=production --legacy-peer-deps && npm run start:prod"
+    command: npm run start:prod
     container_name: front-service
     restart: always
     working_dir: /app
@@ -18,7 +18,7 @@ services:
 
   api-gateway:
     image: node:lts-alpine3.19
-    command: sh -c "npm ci --only=production --legacy-peer-deps && npm run start:prod"
+    command: npm run start:prod
     container_name: api-gateway
     restart: always
     ports:
@@ -46,7 +46,7 @@ services:
 
   users-service:
     image: node:lts-alpine3.19
-    command: sh -c "npm ci --only=production --legacy-peer-deps && npm run start:prod"
+    command: npm run start:prod
     container_name: users-service
     restart: always
     working_dir: /app
@@ -91,7 +91,7 @@ services:
 
   payments-service:
     image: node:lts-alpine3.19
-    command: sh -c "npm ci --only=production --legacy-peer-deps && npm run start:prod"
+    command: npm run start:prod
     container_name: payments-service
     restart: always
     working_dir: /app
