@@ -1,6 +1,21 @@
 version: '3.4'
 
 services:
+  front-service:
+    image: node:lts-alpine3.19
+    command: sh -c "npm ci --only=production --legacy-peer-deps && npm run start:prod"
+    container_name: front-service
+    restart: always
+    working_dir: /app
+    volumes:
+      - ~/work/front-service:/app
+    ports:
+      - "3001:3000"
+    env_file:
+      - ~/work/api-gateway/.env
+    networks:
+      - microservice-network
+
   api-gateway:
     image: node:lts-alpine3.19
     command: sh -c "npm ci --only=production --legacy-peer-deps && npm run start:prod"

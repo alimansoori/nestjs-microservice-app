@@ -1,6 +1,22 @@
 version: '3.4'
 
 services:
+  front-service:
+    build:
+      context: ../services/front-service
+      target: development
+    command: npm run start:dev
+    container_name: front-service
+    restart: always
+    ports:
+      - "3001:3000"
+    volumes:
+      - ../services/front-service/src:/usr/src/app/src
+    env_file:
+      - ../.env
+    networks:
+      - microservice-network
+
   api-gateway:
     build:
       context: ../api-gateway
