@@ -25,7 +25,7 @@ services:
     command: sh -c "npm install -g @compodoc/compodoc && compodoc -s"
     working_dir: /doc
     volumes:
-      - ~/work/api-gateway-doc:/doc/documentation
+      - ~/work/api-gateway-doc/documentation:/doc/documentation
     networks:
       - microservice-network
 
@@ -70,7 +70,7 @@ services:
     command: sh -c "npm install -g @compodoc/compodoc && compodoc -s"
     working_dir: /doc
     volumes:
-      - ~/work/users-service-doc:/doc/documentation
+      - ~/work/users-service-doc/documentation:/doc/documentation
     networks:
       - microservice-network
 
@@ -115,7 +115,7 @@ services:
     command: sh -c "npm install -g @compodoc/compodoc && compodoc -s"
     working_dir: /doc
     volumes:
-      - ~/work/payments-service-doc:/doc/documentation
+      - ~/work/payments-service-doc/documentation:/doc/documentation
     networks:
       - microservice-network
 
