@@ -1,0 +1,14 @@
+{
+  "name": "nestjs-microservice-app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start:dev": "docker-compose -p microservice-app -f docker-compose/docker-compose.dev.yml up -d --build",
+    "start:dev:down": "docker-compose -p microservice-app -f docker-compose/docker-compose.dev.yml down",
+    "start:prod": "docker-compose -p microservice-app -f docker-compose/docker-compose.prod.yml up -d --build",
+    "start:prod:down": "docker-compose -p microservice-app -f docker-compose/docker-compose.prod.yml down"
+  },
+  "author": "Ali Mansoori",
+  "license": "ISC"
+}

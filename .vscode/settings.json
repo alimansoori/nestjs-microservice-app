@@ -6,6 +6,8 @@
         "contex",
         "fullchain",
         "letsencrypt",
-        "nats"
+        "Mansoori",
+        "nats",
+        "nestjs"
     ]
 }
