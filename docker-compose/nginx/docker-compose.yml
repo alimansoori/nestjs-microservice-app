@@ -34,7 +34,8 @@ services:
       "--email", "alimanssouri221@gmail.com",
       "--agree-tos",
       "--no-eff-email",
-      "-d", "alimansoori.com"
+      "-d", "alimansoori.com",
+      "-d", "api.alimansoori.com"
     ]
 
 volumes:

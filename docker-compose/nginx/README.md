@@ -62,7 +62,7 @@ services:
       "--email", "your-email@example.com",
       "--agree-tos",
       "--no-eff-email",
-      "-d", "your-domain.com"
+      "-d", "domain.com"
     ]
 
 networks:
@@ -79,7 +79,7 @@ volumes:
 - The `nginx` service uses the official `nginx:stable-alpine` image.
 - The `default.conf` file is mounted directly from the host machine.
 - The `certbot` service is configured to obtain SSL certificates.
-- Replace `your-email@example.com` and `your-domain.com` with your actual email and domain name.
+- Replace `your-email@example.com` and `domain.com` with your actual email and domain name.
 
 ---
 
@@ -90,7 +90,7 @@ Create a `default.conf` file at `~/work/nginx/default.conf` with the following c
 ```nginx
 server {
     listen 80;
-    server_name your-domain.com;
+    server_name domain.com;
 
     location /.well-known/acme-challenge/ {
         root /var/www/certbot;
@@ -106,7 +106,7 @@ server {
 **Notes:**
 
 - This configuration allows Nginx to serve the necessary files for Let's Encrypt domain verification.
-- Replace `your-domain.com` with your actual domain name.
+- Replace `domain.com` with your actual domain name.
 
 ---
 
@@ -149,7 +149,7 @@ We will first run Nginx without SSL to allow Let's Encrypt to verify the domain 
 
 3. **Test Nginx:**
 
-   Visit `http://your-domain.com` in your browser. You should see a page displaying "Temporary Nginx Server".
+   Visit `http://domain.com` in your browser. You should see a page displaying "Temporary Nginx Server".
 
 ---
 
@@ -175,7 +175,7 @@ Now that we have obtained the SSL certificates, update the `default.conf` file t
 ```nginx
 server {
     listen 80;
-    server_name your-domain.com;
+    server_name domain.com;
     location /.well-known/acme-challenge/ {
         root /var/www/certbot;
     }
@@ -186,10 +186,10 @@ server {
 
 server {
     listen 443 ssl;
-    server_name your-domain.com;
+    server_name domain.com;
 
-    ssl_certificate /etc/letsencrypt/live/your-domain.com/fullchain.pem;
-    ssl_certificate_key /etc/letsencrypt/live/your-domain.com/privkey.pem;
+    ssl_certificate /etc/letsencrypt/live/domain.com/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/domain.com/privkey.pem;
 
     location / {
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
@@ -229,7 +229,7 @@ server {
 
 ## Step 9: Test HTTPS Access
 
-Visit `https://your-domain.com` in your browser to verify:
+Visit `https://domain.com` in your browser to verify:
 
 - The SSL certificate is valid.
 - The site loads correctly.
