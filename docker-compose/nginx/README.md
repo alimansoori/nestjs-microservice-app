@@ -8,7 +8,7 @@ This guide will help you set up **Nginx** with **Let's Encrypt** SSL certificate
 ## Prerequisites
 
 - **Docker** and **Docker Compose** installed on your system.
-- A domain name pointing to your server's IP address.
+- A domain name and subdomain names pointing to your server's IP address.
 - Ports **80** and **443** open on your server's firewall.
 
 ---
@@ -37,14 +37,14 @@ services:
     container_name: nginx
     restart: always
     ports:
-      - 80:80
-      - 443:443
-    networks:
-      - microservice-network
+      - "80:80"
+      - "443:443"
     volumes:
-      - ~/work/nginx/default.conf:/etc/nginx/conf.d/default.conf
+      - ./default.conf:/etc/nginx/conf.d/default.conf
       - certs:/etc/letsencrypt
       - certbot-www:/var/www/certbot
+    networks:
+      - microservice-network
 
   certbot:
     image: certbot/certbot
@@ -52,26 +52,29 @@ services:
     volumes:
       - certs:/etc/letsencrypt
       - certbot-www:/var/www/certbot
-      - ~/work/nginx/letsencrypt:/var/log/letsencrypt
     networks:
       - microservice-network
     command: [
-      "certonly",
-      "--webroot",
-      "--webroot-path=/var/www/certbot",
-      "--email", "your-email@example.com",
-      "--agree-tos",
-      "--no-eff-email",
-      "-d", "domain.com"
+      "certonly", 
+      "--webroot", 
+      "--webroot-path=/var/www/certbot", 
+      "--email", "your-email@example.com", 
+      "--agree-tos", 
+      "--no-eff-email", 
+      "-d", "domain.com", 
+      "-d", "api.domain.com", 
+      "-d", "api-gateway-doc.domain.com", 
+      "-d", "users-service-doc.domain.com", 
+      "-d", "payments-service-doc.domain.com"
     ]
-
-networks:
-  microservice-network:
-    external: true
 
 volumes:
   certs:
   certbot-www:
+
+networks:
+  microservice-network:
+    driver: bridge
 ```
 
 **Notes:**
@@ -90,7 +93,7 @@ Create a `default.conf` file at `~/work/nginx/default.conf` with the following c
 ```nginx
 server {
     listen 80;
-    server_name domain.com;
+    server_name domain.com api.domain.com api-gateway-doc.domain.com users-service-doc.domain.com payments-service-doc.domain.com;
 
     location /.well-known/acme-challenge/ {
         root /var/www/certbot;
