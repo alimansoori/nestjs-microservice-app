@@ -14,7 +14,7 @@
     "start:prod:down:volume:images:network": "docker-compose -p microservice-app -f docker-compose/docker-compose.prod.yml down -v --rmi all --remove-orphans",
     "start:prod:down:volume:images:network:volume": "docker-compose -p microservice-app -f docker-compose/docker-compose.prod.yml down -v --rmi all --remove-orphans --volumes",
     "docker": "docker-compose -p microservice-app -f docker-compose/docker-compose.yml up -d --build",
-    "docker:down": "docker-compose -p microservice-app -f docker-compose/docker-compose.yml down",
+    "docker:down": "docker-compose -p microservice-app -f docker-compose/docker-compose.yml down"
   },
   "author": "Ali Mansoori",
   "license": "ISC"
