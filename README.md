@@ -18,6 +18,13 @@ This project is a microservices architecture built with [Nest.js](https://nestjs
 - **Docker & Docker Compose**: For containerizing and orchestrating the services.
 - **NATS**: Message broker for inter-service communication.
 
+## Live Demos
+- **Project Demo**: [https://alimansoori.com](https://alimansoori.com)
+- **API Gateway Demo**: [https://api.alimansoori.com](https://api.alimansoori.com)
+- **API Gateway Documentation**: [https://api-gateway-doc.alimansoori.com](https://api-gateway-doc.alimansoori.com)
+- **Users Service Documentation**: [https://users-service-doc.alimansoori.com](https://users-service-doc.alimansoori.com)
+- **Payments Service Documentation**: [https://payments-service-doc.alimansoori.com](https://payments-service-doc.alimansoori.com)
+
 ## Project Setup
 
 ### Cloning the Repository
@@ -29,15 +36,6 @@ git clone --recursive git@github.com:alimansoori/nestjs-microservice-app.git
 If you've already cloned the repository, initialize the submodules using:
 ```bash
 git submodule update --init --recursive
-```
-
-### Installing Dependencies
-After cloning the repository, install dependencies for each service by navigating to their directories and running `npm install`.
-
-```bash
-cd services/users-service
-npm install
-# Repeat for other services (api-gateway, payments-service, front-service)
 ```
 
 ### Running the Project
