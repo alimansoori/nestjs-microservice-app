@@ -35,7 +35,10 @@ services:
       "--agree-tos",
       "--no-eff-email",
       "-d", "alimansoori.com",
-      "-d", "api.alimansoori.com"
+      "-d", "api.alimansoori.com",
+      "-d", "users-service-doc.alimansoori.com",
+      "-d", "api-gateway-doc.alimansoori.com",
+      "-d", "payments-service-doc.alimansoori.com",
     ]
 
 volumes:
