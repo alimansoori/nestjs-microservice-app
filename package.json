@@ -6,8 +6,15 @@
   "scripts": {
     "start:dev": "docker-compose -p microservice-app -f docker-compose/docker-compose.dev.yml up -d --build",
     "start:dev:down": "docker-compose -p microservice-app -f docker-compose/docker-compose.dev.yml down",
+    "start:dev:down:volume": "docker-compose -p microservice-app -f docker-compose/docker-compose.dev.yml down -v",
     "start:prod": "docker-compose -p microservice-app -f docker-compose/docker-compose.prod.yml up -d --build",
-    "start:prod:down": "docker-compose -p microservice-app -f docker-compose/docker-compose.prod.yml down"
+    "start:prod:down": "docker-compose -p microservice-app -f docker-compose/docker-compose.prod.yml down",
+    "start:prod:down:volume": "docker-compose -p microservice-app -f docker-compose/docker-compose.prod.yml down -v",
+    "start:prod:down:volume:images": "docker-compose -p microservice-app -f docker-compose/docker-compose.prod.yml down -v --rmi all",
+    "start:prod:down:volume:images:network": "docker-compose -p microservice-app -f docker-compose/docker-compose.prod.yml down -v --rmi all --remove-orphans",
+    "start:prod:down:volume:images:network:volume": "docker-compose -p microservice-app -f docker-compose/docker-compose.prod.yml down -v --rmi all --remove-orphans --volumes",
+    "docker": "docker-compose -p microservice-app -f docker-compose/docker-compose.yml up -d --build",
+    "docker:down": "docker-compose -p microservice-app -f docker-compose/docker-compose.yml down",
   },
   "author": "Ali Mansoori",
   "license": "ISC"
